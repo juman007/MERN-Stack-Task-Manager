@@ -6,18 +6,22 @@ The goal of this assignment was to develop a Task Management Application using t
 ---
 
 ### Deployed Application URLs
+Frontend:
 ```bash 
- Frontend: https://taskmefrontend.vercel.app
+  https://taskmefrontend.vercel.app
 ```
+Backend:
 ```bash
- Backend: https://taskme-eo9u.onrender.com
+  https://taskme-eo9u.onrender.com
 ```
 ###  Login Email and Passowrd
+Email:
 ```bash
-Email: j@juman.com
+ j@juman.com
 ```
+Password:
 ```bash
-Password: 12345678
+ 12345678
 ```
 
 ---
