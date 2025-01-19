@@ -17,15 +17,23 @@ import {
    Button,
    InputAdornment,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search"; 
+import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import { AppContext } from "../context/appContext";
 import { formatDate, formatTime } from "./convertDateTime";
 import { toast } from "react-toastify";
+import Loader from "./Loader/Loader";
 
 const CustomCardList = () => {
-   const { cardData, backendURL, fetchTasks, setCardData, token } =
-      useContext(AppContext);
+   const {
+      cardData,
+      backendURL,
+      fetchTasks,
+      setCardData,
+      token,
+      loading,
+      setLoading,
+   } = useContext(AppContext);
 
    const [openEditDialog, setOpenEditDialog] = useState(false);
    const [currentCard, setCurrentCard] = useState(null);
@@ -58,6 +66,8 @@ const CustomCardList = () => {
 
    // Handle updating the card data (PUT request to the backend)
    const handleSaveChanges = async () => {
+      setLoading(true);
+
       if (!updatedTitle || !updatedDescription) {
          alert("Both title and description are required!");
          return;
@@ -86,11 +96,14 @@ const CustomCardList = () => {
          }
       } catch (error) {
          console.error("Error updating task:", error);
+      } finally {
+         setLoading(false); // Stop loading
       }
    };
 
    // Handle deleting a card (POST request to the backend)
    const handleDeleteClick = async (taskId) => {
+      setLoading(true);
       try {
          const response = await axios.post(
             `${backendURL}/api/user/deleteTask`,
@@ -115,6 +128,8 @@ const CustomCardList = () => {
             "Error deleting task:",
             error.response?.data || error.message
          );
+      } finally {
+         setLoading(false); // Stop loading
       }
    };
 
@@ -122,6 +137,19 @@ const CustomCardList = () => {
    const handleSearchChange = (e) => {
       setSearchText(e.target.value);
    };
+
+   if (loading) {
+      <Box
+         sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+         }}
+      >
+         <Loader />
+      </Box>;
+   }
 
    return (
       <div>
@@ -136,14 +164,14 @@ const CustomCardList = () => {
                value={searchText}
                onChange={handleSearchChange}
                sx={{
-                  width: "100%", 
-                  maxWidth: 600, 
+                  width: "100%",
+                  maxWidth: 600,
                   "& .MuiOutlinedInput-root": {
-                     borderColor: "blue", 
-                     backgroundColor: "white", 
+                     borderColor: "blue",
+                     backgroundColor: "white",
                   },
                   "& .MuiInputLabel-root": {
-                     color: "blue", 
+                     color: "blue",
                   },
                }}
                InputProps={{
@@ -151,10 +179,10 @@ const CustomCardList = () => {
                      <InputAdornment position="end">
                         <IconButton
                            sx={{
-                              backgroundColor: "blue", 
-                              color: "white", 
+                              backgroundColor: "blue",
+                              color: "white",
                               "&:hover": {
-                                 backgroundColor: "darkblue", 
+                                 backgroundColor: "darkblue",
                               },
                            }}
                         >
@@ -180,7 +208,7 @@ const CustomCardList = () => {
                            borderRadius: 2,
                            display: "flex",
                            flexDirection: "column",
-                           height: "100%", 
+                           height: "100%",
                         }}
                      >
                         <CardContent sx={{ flexGrow: 1 }}>
@@ -222,7 +250,7 @@ const CustomCardList = () => {
                               <IconButton
                                  aria-label="delete"
                                  color="error"
-                                 onClick={() => handleDeleteClick(item._id)} 
+                                 onClick={() => handleDeleteClick(item._id)}
                               >
                                  <DeleteIcon />
                               </IconButton>

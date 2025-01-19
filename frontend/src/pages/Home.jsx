@@ -14,9 +14,11 @@ import CustomCardList from "../components/Card";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { AppContext } from "../context/appContext";
+import Loader from "../components/Loader/Loader";
 
 const Home = () => {
-   const { backendURL, fetchTasks } = useContext(AppContext);
+   const { backendURL, fetchTasks, loading, setLoading } =
+      useContext(AppContext);
    const [open, setOpen] = useState(false);
    const [title, setTitle] = useState("");
    const [description, setDescription] = useState("");
@@ -42,6 +44,7 @@ const Home = () => {
          return;
       }
 
+      setLoading(true);
       try {
          const token = localStorage.getItem("token");
 
@@ -72,8 +75,23 @@ const Home = () => {
       } catch (error) {
          console.error("Error posting task:", error);
          toast.error("Error adding task, please try again");
+      } finally {
+         setLoading(false);
       }
    };
+
+   if (loading) {
+      <Box
+         sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+         }}
+      >
+         <Loader />
+      </Box>;
+   }
 
    return (
       <div>
