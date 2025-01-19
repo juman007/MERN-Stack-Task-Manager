@@ -137,7 +137,7 @@ Password:
 2. **Backend**: Node.js, Express, Jwt, Validator, bycrpt  
 3. **Database**: MongoDB (via Mongoose)  
 4. **Deployment**:  
-   - **Frontend**: Netlify ([https://taskmefrontend.vercel.app](https://taskmefrontend.vercel.app))  
+   - **Frontend**: Vercel ([https://taskmefrontend.vercel.app](https://taskmefrontend.vercel.app))  
    - **Backend**: Render ([https://taskme-eo9u.onrender.com](https://taskme-eo9u.onrender.com/))  
 
 ---
